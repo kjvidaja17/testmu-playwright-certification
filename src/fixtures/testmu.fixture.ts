@@ -90,6 +90,7 @@ export const test = base.extend<TestMuOptions>({
           network: true,
           video: true,
           console: true,
+          visual: true,
 
           playwrightClientVersion,
           useSpecificBundleVersion: true,
