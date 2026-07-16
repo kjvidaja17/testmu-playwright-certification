@@ -4,9 +4,8 @@ import type {
 } from '@playwright/test';
 
 export class SimpleFormDemoPage {
-  private readonly messageInput: Locator;
-  private readonly getCheckedValueButton: Locator;
-
+  readonly messageInput: Locator;
+  readonly getCheckedValueButton: Locator;
   readonly displayedMessage: Locator;
 
   constructor(page: Page) {

@@ -23,6 +23,15 @@ export class SeleniumPlaygroundPage {
   }
 
   async openSimpleFormDemo(): Promise<void> {
-    await this.simpleFormDemoLink.click();
+    await Promise.all([
+      this.page.waitForURL(
+        /simple-form-demo/,
+        {
+          waitUntil: 'load',
+        },
+      ),
+
+      this.simpleFormDemoLink.click(),
+    ]);
   }
 }

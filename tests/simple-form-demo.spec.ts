@@ -11,46 +11,92 @@ import {
   SimpleFormDemoPage,
 } from '../src/pages/simple-form-demo.page';
 
-test.describe(
-  'TestMu AI Simple Form Demo',
-  () => {
-    test(
-      'displays the same message entered by the user',
-      async ({ page }) => {
-        const expectedMessage =
-          'Welcome to TestMu AI';
+test.describe('TestMu AI Simple Form Demo', () => {
+  test(
+    'displays the same message entered by the user',
+    async ({ page }) => {
+      const expectedMessage =
+        'Welcome to TestMu AI';
 
-        const playgroundPage =
-          new SeleniumPlaygroundPage(page);
+      const playgroundPage =
+        new SeleniumPlaygroundPage(page);
 
-        const simpleFormDemoPage =
-          new SimpleFormDemoPage(page);
+      const simpleFormDemoPage =
+        new SimpleFormDemoPage(page);
 
-        // Step 1
-        await playgroundPage.open();
+      await test.step(
+        'Open the Selenium Playground',
+        async () => {
+          await playgroundPage.open();
+        },
+      );
 
-        // Step 2
-        await playgroundPage
-          .openSimpleFormDemo();
+      await test.step(
+        'Open the Simple Form Demo',
+        async () => {
+          await playgroundPage
+            .openSimpleFormDemo();
 
-        // Step 3
-        await expect(page).toHaveURL(
-          /simple-form-demo/,
-        );
+          await expect(page).toHaveURL(
+            /simple-form-demo/,
+          );
+        },
+      );
 
-        // Steps 4 and 5
-        await simpleFormDemoPage
-          .enterMessage(expectedMessage);
+      await test.step(
+        'Enter the message',
+        async () => {
+          await expect(
+            simpleFormDemoPage.messageInput,
+          ).toBeVisible();
 
-        // Step 6
-        await simpleFormDemoPage
-          .clickGetCheckedValue();
+          await expect(
+            simpleFormDemoPage.messageInput,
+          ).toBeEditable();
 
-        // Step 7
-        await expect(
-          simpleFormDemoPage.displayedMessage,
-        ).toHaveText(expectedMessage);
-      },
-    );
-  },
-);
+          await simpleFormDemoPage
+            .enterMessage(expectedMessage);
+
+          /*
+           * This assertion confirms the input was really
+           * populated before the button is clicked.
+           */
+          await expect(
+            simpleFormDemoPage.messageInput,
+          ).toHaveValue(expectedMessage);
+        },
+      );
+
+      await test.step(
+        'Submit the message',
+        async () => {
+          await expect(
+            simpleFormDemoPage
+              .getCheckedValueButton,
+          ).toBeVisible();
+
+          await expect(
+            simpleFormDemoPage
+              .getCheckedValueButton,
+          ).toBeEnabled();
+
+          await simpleFormDemoPage
+            .clickGetCheckedValue();
+        },
+      );
+
+      await test.step(
+        'Validate the displayed message',
+        async () => {
+          await expect(
+            simpleFormDemoPage.displayedMessage,
+          ).toBeVisible();
+
+          await expect(
+            simpleFormDemoPage.displayedMessage,
+          ).toHaveText(expectedMessage);
+        },
+      );
+    },
+  );
+});
