@@ -27,6 +27,21 @@ export class SimpleFormDemoPage {
     message: string,
   ): Promise<void> {
     await this.messageInput.fill(message);
+
+    const enteredValue =
+    await this.messageInput.inputValue();
+
+    if (enteredValue !== message) {
+      await this.messageInput.click();
+      await this.messageInput.fill('');
+
+      await this.messageInput.pressSequentially(
+        message,
+        {
+          delay: 20,
+        },
+      );
+    }
   }
 
   async clickGetCheckedValue(): Promise<void> {

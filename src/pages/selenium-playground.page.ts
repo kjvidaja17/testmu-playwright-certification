@@ -5,6 +5,8 @@ import type {
 
 export class SeleniumPlaygroundPage {
   private readonly simpleFormDemoLink: Locator;
+  private readonly dragDropSlidersLink: Locator;
+  private readonly inputFormSubmitLink: Locator;
 
   constructor(
     private readonly page: Page,
@@ -12,6 +14,18 @@ export class SeleniumPlaygroundPage {
     this.simpleFormDemoLink =
       page.getByRole('link', {
         name: 'Simple Form Demo',
+        exact: true,
+      });
+
+    this.dragDropSlidersLink =
+      page.getByRole('link', {
+        name: 'Drag & Drop Sliders',
+        exact: true,
+      });
+
+    this.inputFormSubmitLink =
+      page.getByRole('link', {
+        name: 'Input Form Submit',
         exact: true,
       });
   }
@@ -32,6 +46,28 @@ export class SeleniumPlaygroundPage {
       ),
 
       this.simpleFormDemoLink.click(),
+    ]);
+
+    await this.page.waitForLoadState('load');
+  }
+
+  async openDragDropSliders(): Promise<void> {
+    await Promise.all([
+      this.page.waitForURL(
+        /drag-drop-range-sliders-demo/,
+      ),
+
+      this.dragDropSlidersLink.click(),
+    ]);
+  }
+
+  async openInputFormSubmit(): Promise<void> {
+    await Promise.all([
+      this.page.waitForURL(
+        /input-form-demo/,
+      ),
+
+      this.inputFormSubmitLink.click(),
     ]);
   }
 }

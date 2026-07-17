@@ -54,16 +54,27 @@ test.describe('TestMu AI Simple Form Demo', () => {
             simpleFormDemoPage.messageInput,
           ).toBeEditable();
 
-          await simpleFormDemoPage
-            .enterMessage(expectedMessage);
+          await expect(async () => {
+            await simpleFormDemoPage.enterMessage(
+              expectedMessage,
+            );
 
-          /*
-           * This assertion confirms the input was really
-           * populated before the button is clicked.
-           */
-          await expect(
-            simpleFormDemoPage.messageInput,
-          ).toHaveValue(expectedMessage);
+            await expect(
+              simpleFormDemoPage.messageInput,
+            ).toHaveValue(
+              expectedMessage,
+              {
+                timeout: 2_000,
+              },
+            );
+          }).toPass({
+            timeout: 15_000,
+            intervals: [
+              250,
+              500,
+              1_000,
+            ],
+          });
         },
       );
 
